@@ -1,0 +1,10 @@
+app:
+   name: Student Info App From Properties
+   version: 1.0.9
+
+spring:
+   datasource:
+     driver-class-name: com.mysql.cj.jdbc.Driver
+     url : jdbc:mysql://localhost/ingress?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+     username: root
+     password: 12345
