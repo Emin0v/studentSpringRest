@@ -28,6 +28,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 //	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly("org.springframework.boot:spring-boot-devtools")
+	implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.5.0'
 }
 
 test {

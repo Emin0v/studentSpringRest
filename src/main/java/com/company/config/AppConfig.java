@@ -1,4 +1,4 @@
-package com.company.student.config;
+package com.company.config;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

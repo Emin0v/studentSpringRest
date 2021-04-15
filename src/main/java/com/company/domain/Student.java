@@ -1,4 +1,4 @@
-package com.company.student.domain;
+package com.company.domain;
 
 import lombok.Data;
 
