@@ -1,6 +1,17 @@
 app:
    name: Student Info App From Properties
    version: 1.0.9
+   security:
+     signing-key: aaa
+     encoding-strength: 256
+     security-realm: Spring Boot JWT Example Realm
+     jwt:
+       resoure-id: studentapi
+       client-id: Mahammad
+       client-secret: Mahammad
+       grant-type: password
+       scope-read: read
+       scope-write: write
 
 spring:
    datasource:

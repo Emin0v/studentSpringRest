@@ -29,6 +29,10 @@ dependencies {
 //	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly("org.springframework.boot:spring-boot-devtools")
 	implementation group: 'at.favre.lib', name: 'bcrypt', version: '0.5.0'
+	//
+	compile "org.springframework.boot:spring-boot-starter-security"
+	compile ('org.springframework.security:spring-security-jwt:1.0.3.RELEASE')
+	compile("org.springframework.security.oauth:spring-security-oauth2:2.0.7.RELEASE")
 }
 
 test {

@@ -2,7 +2,6 @@ package com.company.controller;
 
 
 import com.company.config.AppConfig;
-import com.company.domain.Student;
 import com.company.entity.User;
 import com.company.service.inter.UserServiceInter;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +25,7 @@ public class UserRestController {
     public void createStudent(@RequestBody User user){
         service.createUser(user);
     }
+
+
 
 }

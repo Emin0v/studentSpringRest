@@ -16,4 +16,25 @@ public class AppConfig {
     @Value("${app.version}")
     private String version;
 
+    @Value("${app.security.signing-key}")
+    private String signingKey;
+
+    @Value("${app.security.jwt.client-id}")
+    private String clientId;
+
+    @Value("${app.security.jwt.client-secret}")
+    private String clientSecret;
+
+    @Value("${app.security.jwt.grant-type}")
+    private String grantType;
+
+    @Value("${app.security.jwt.scope-read}")
+    private String scopeRead;
+
+    @Value("${app.security.jwt.scope-write}")
+    private String scopeWrite;
+
+    @Value("${app.security.jwt.resource-id}")
+    private String resourceId;
+
 }
