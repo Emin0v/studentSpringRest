@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-@Repository("userDao1")
+@Repository("userDao")
 public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
     @PersistenceContext

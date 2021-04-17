@@ -6,7 +6,7 @@ app:
      encoding-strength: 256
      security-realm: Spring Boot JWT Example Realm
      jwt:
-       resoure-id: studentapi
+       resource-id: studentapi
        client-id: Mahammad
        client-secret: Mahammad
        grant-type: password

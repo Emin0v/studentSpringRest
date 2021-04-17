@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .httpBasic()
-                .realmName("")
+                .realmName("studentrestapi")
                 .and()
                 .csrf()
                 .disable();
