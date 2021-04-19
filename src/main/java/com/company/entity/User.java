@@ -10,7 +10,6 @@ import java.util.List;
 import javax.persistence.*;
 
 /**
- *
  * @author Eminov
  */
 @Entity
@@ -38,8 +37,14 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "password")
     private String password;
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "userId")
-    private List<UserRole> userRoleList;
+    //    @OneToMany(fetch = FetchType.EAGER,mappedBy = "userId")
+//    private List<UserRole> userRoleList;
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    private List<Role> roles;
 
     public User() {
     }
@@ -48,7 +53,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public User(Integer id, String name, String surname, int age, String username,String password) {
+    public User(Integer id, String name, String surname, int age, String username, String password) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -105,12 +110,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public List<UserRole> getUserRoleList() {
-        return userRoleList;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setUserRoleList(List<UserRole> userRoleList) {
-        this.userRoleList = userRoleList;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -137,5 +142,5 @@ public class User implements Serializable {
     public String toString() {
         return "entity.User[ id=" + id + " ]";
     }
-    
+
 }

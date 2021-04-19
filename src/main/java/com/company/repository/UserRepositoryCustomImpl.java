@@ -39,29 +39,4 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return q.getResultList();
     }
 
-    @Override
-    public User findByUsernameAndPassword(String email, String password) {
-        Query q = em.createQuery("select u from User u where u.username=:e and u.password=:p", User.class);
-        q.setParameter("e", email);
-        q.setParameter("p", password);
-
-        List<User> list = q.getResultList();
-        if(list.size()==1){
-            return list.get(0);
-        }
-        return null ;
-    }
-
-    @Override
-    public User findByUsername(String email) {
-        Query q = em.createQuery("select u from User u where u.username=:e", User.class);
-        q.setParameter("e", email);
-
-        List<User> list = q.getResultList();
-        if(list.size()==1){
-            return list.get(0);
-        }
-        return null ;
-    }
-
 }

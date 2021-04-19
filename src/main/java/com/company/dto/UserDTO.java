@@ -1,7 +1,7 @@
 package com.company.dto;
 
+import com.company.entity.Role;
 import com.company.entity.User;
-import com.company.entity.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,26 +20,50 @@ public class UserDTO {
     private Integer age;
     private String username;
     private String password;
-    private List<UserRoleDTO> userRoleList;
+    private List<RoleDTO> roles;
 
 
-    public UserDTO(User user){
-        this.id=user.getId();
-        this.name=user.getName();
-        this.surname=user.getSurname();
-        this.age=user.getAge();
-        this.username=user.getUsername();
-        this.password=user.getPassword();
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.surname = user.getSurname();
+        this.age = user.getAge();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
 
-        List<UserRoleDTO> userRoleDTOS = new ArrayList<>();
+        List<RoleDTO> roleDTOS = new ArrayList<>();
 
-        List<UserRole> userRoles = user.getUserRoleList();
+        List<Role> roleList = user.getRoles();
 
-//        for(int i=0 ; i<userRoles.size() ; i++){
-//            UserRole userRole = userRoles.get(i);
-//            userRoleDTOS.add(new UserRoleDTO())
-//        }
+        for (int i = 0; i < roleList.size(); i++) {
+            Role role = roleList.get(i);
+            roleDTOS.add(new RoleDTO(role));
+        }
+        roles = roleDTOS;
+    }
 
+    public User toUser() {
+        User user = new User();
+
+        user.setId(getId());
+        user.setName(getName());
+        user.setSurname(getSurname());
+        user.setAge(getAge());
+        user.setUsername(getUsername());
+        user.setPassword(getPassword());
+
+        List<Role> roleList = new ArrayList<>();
+        List<RoleDTO> roleDTOS = getRoles();
+
+        for (int i = 0; i < roleDTOS.size(); i++) {
+            RoleDTO roleDTO = roleDTOS.get(i);
+
+            roleList.add(roleDTO.toRole());
+        }
+
+        user.setRoles(roleList);
+
+        return user;
 
     }
 }

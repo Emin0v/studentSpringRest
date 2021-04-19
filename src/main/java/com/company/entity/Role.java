@@ -5,12 +5,11 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *
  * @author Eminov
  */
 @Entity
 @Table(name = "roles")
-public class Roles implements Serializable {
+public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -21,17 +20,19 @@ public class Roles implements Serializable {
     @Basic(optional = false)
     @Column(name = "role")
     private String role;
-    @OneToMany(mappedBy = "roleId")
-    private List<UserRole> userRoleList;
+    //    @OneToMany(mappedBy = "roleId")
+//    private List<UserRole> userRoleList;
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
-    public Roles() {
+    public Role() {
     }
 
-    public Roles(Integer id) {
+    public Role(Integer id) {
         this.id = id;
     }
 
-    public Roles(Integer id, String role) {
+    public Role(Integer id, String role) {
         this.id = id;
         this.role = role;
     }
@@ -52,12 +53,12 @@ public class Roles implements Serializable {
         this.role = role;
     }
 
-    public List<UserRole> getUserRoleList() {
-        return userRoleList;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setUserRoleList(List<UserRole> userRoleList) {
-        this.userRoleList = userRoleList;
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     @Override
@@ -70,10 +71,10 @@ public class Roles implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Roles)) {
+        if (!(object instanceof Role)) {
             return false;
         }
-        Roles other = (Roles) object;
+        Role other = (Role) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -84,5 +85,5 @@ public class Roles implements Serializable {
     public String toString() {
         return "entity.Roles[ id=" + id + " ]";
     }
-    
+
 }

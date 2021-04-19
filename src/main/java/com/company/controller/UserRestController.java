@@ -34,8 +34,8 @@ public class UserRestController {
     }
 
     @PostMapping("/add/user")
-    public void createStudent(@RequestBody User user){
-        service.createUser(user);
+    public void createStudent(@RequestBody UserDTO userDTO){
+        service.createUser(userDTO);
     }
 
 
