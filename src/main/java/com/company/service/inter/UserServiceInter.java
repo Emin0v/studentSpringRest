@@ -8,9 +8,11 @@ import java.util.Optional;
 
 public interface UserServiceInter {
 
-    User createUser(UserDTO userDTO);
+    User register(UserDTO userDTO);
 
     boolean deleteUser(Integer id);
+
+    public boolean check(String username);
 
     Optional<User> findById(Integer id);
 

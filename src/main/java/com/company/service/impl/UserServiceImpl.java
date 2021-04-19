@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserServiceInter {
     public static BCrypt.Hasher crypt = BCrypt.withDefaults();
 
     @Override
-    public User createUser(UserDTO userDTO) {
+    public User register(UserDTO userDTO) {
 
         User user = userDTO.toUser();
 
@@ -56,6 +56,11 @@ public class UserServiceImpl implements UserServiceInter {
         User user = userRepository.findById(id).get();
         userRepository.delete(user);
         return true;
+    }
+
+    @Override
+    public boolean check(String username) {
+        return userRepository.existsByUsername(username);
     }
 
     @Override

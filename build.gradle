@@ -33,6 +33,9 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-starter-security"
 	compile ('org.springframework.security:spring-security-jwt:1.0.3.RELEASE')
 	compile("org.springframework.security.oauth:spring-security-oauth2:2.0.7.RELEASE")
+	// https://mvnrepository.com/artifact/javax.validation/validation-api
+	implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+
 }
 
 test {
