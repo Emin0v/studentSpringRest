@@ -1,5 +1,6 @@
 package com.company.service.inter;
 
+import com.company.dto.RegisterDTO;
 import com.company.dto.UserDTO;
 import com.company.entity.User;
 
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface UserServiceInter {
 
-    User register(UserDTO userDTO);
+    UserDTO register(RegisterDTO registerDTO);
 
     boolean deleteUser(Integer id);
 
@@ -16,7 +17,7 @@ public interface UserServiceInter {
 
     Optional<User> findById(Integer id);
 
-    public List<User> getAll(String name, String surname);
+    public List<UserDTO> getAll(String name, String surname);
 
     public Optional<User> findByUsernameAndPassword(String email, String password);
 

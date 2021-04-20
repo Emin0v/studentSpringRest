@@ -19,7 +19,6 @@ public class UserDTO {
     private String surname;
     private Integer age;
     private String username;
-    private String password;
     private List<RoleDTO> roles;
 
 
@@ -29,7 +28,6 @@ public class UserDTO {
         this.surname = user.getSurname();
         this.age = user.getAge();
         this.username = user.getUsername();
-        this.password = user.getPassword();
 
         List<RoleDTO> roleDTOS = new ArrayList<>();
 
@@ -50,7 +48,6 @@ public class UserDTO {
         user.setSurname(getSurname());
         user.setAge(getAge());
         user.setUsername(getUsername());
-        user.setPassword(getPassword());
 
         List<Role> roleList = new ArrayList<>();
         List<RoleDTO> roleDTOS = getRoles();

@@ -2,6 +2,7 @@ package com.company.controller;
 
 
 import com.company.config.AppConfig;
+import com.company.dto.RegisterDTO;
 import com.company.dto.ResponseDTO;
 import com.company.dto.UserDTO;
 import com.company.entity.User;
@@ -34,8 +35,10 @@ public class UserRestController {
     }
 
     @PostMapping("/add/user")
-    public void createStudent(@RequestBody UserDTO userDTO){
-        service.register(userDTO);
+    public ResponseEntity<ResponseDTO> createStudent(@RequestBody RegisterDTO registerDTO){
+         UserDTO userDTO = service.register(registerDTO);
+
+        return ResponseEntity.ok(ResponseDTO.of(userDTO,"Successfully added"));
     }
 
 
