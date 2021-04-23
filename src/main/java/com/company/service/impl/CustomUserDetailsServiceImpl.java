@@ -1,4 +1,4 @@
-package com.company.security;
+package com.company.service.impl;
 
 import com.company.entity.User;
 import com.company.service.inter.UserServiceInter;

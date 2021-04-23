@@ -37,14 +37,17 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "password")
     private String password;
-    //    @OneToMany(fetch = FetchType.EAGER,mappedBy = "userId")
-//    private List<UserRole> userRoleList;
     @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignedTo", fetch = FetchType.EAGER)
+    private List<Task> studentTaskList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignedBy", fetch = FetchType.EAGER)
+    private List<Task> teacherTaskList;
 
     public User() {
     }
@@ -116,6 +119,22 @@ public class User implements Serializable {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public List<Task> getStudentTaskList() {
+        return studentTaskList;
+    }
+
+    public void setStudentTaskList(List<Task> studentTaskList) {
+        this.studentTaskList = studentTaskList;
+    }
+
+    public List<Task> getTeacherTaskList() {
+        return teacherTaskList;
+    }
+
+    public void setTeacherTaskList(List<Task> teacherTaskList) {
+        this.teacherTaskList = teacherTaskList;
     }
 
     @Override
