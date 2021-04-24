@@ -2,7 +2,7 @@ package com.company.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tasks")
@@ -10,6 +10,7 @@ public class Task implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
@@ -22,10 +23,10 @@ public class Task implements Serializable {
     @Basic(optional = false)
     @Column(name = "deadline")
     @Temporal(TemporalType.DATE)
-    private Date deadline;
-    @Basic(optional = false)
+    private LocalDate deadline;
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
     @JoinColumn(name = "assigned_to", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private User assignedTo;
@@ -40,7 +41,7 @@ public class Task implements Serializable {
         this.id = id;
     }
 
-    public Task(Integer id, String content, int rank, Date deadline, String status) {
+    public Task(Integer id, String content, int rank, LocalDate deadline, TaskStatus status) {
         this.id = id;
         this.content = content;
         this.rank = rank;
@@ -72,19 +73,19 @@ public class Task implements Serializable {
         this.rank = rank;
     }
 
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 

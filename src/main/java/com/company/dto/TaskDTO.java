@@ -1,10 +1,11 @@
 package com.company.dto;
 
+import com.company.entity.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -14,7 +15,8 @@ public class TaskDTO {
     private Integer id;
     private String content;
     private int rank;
-    private Date deadline;
-    private String status;
+    private LocalDate deadline;
+    private TaskStatus status;
+    private Integer student_id;
 
 }
