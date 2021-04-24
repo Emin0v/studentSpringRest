@@ -34,42 +34,55 @@ public class TaskServiceImpl implements TaskServiceInter {
     @Override
     public TaskDTO save(TaskDTO taskDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)){
+        if (authentication instanceof AnonymousAuthenticationToken){
             throw new UnauthorizedUserException("Please log in");
         }
-        taskDTO.setRank(10);
-        taskDTO.setStatus(TaskStatus.PENDING);
+//        taskDTO.setRank(10);
+//        taskDTO.setStatus(TaskStatus.PENDING);
+//
+//        LocalDate deadline = LocalDate.now().plusDays(10);
+//        taskDTO.setDeadline(deadline);
+
+//        Task task = modelMapper.map(taskDTO, Task.class);
+        Task task = new Task();
+        task.setRank(10);
+        task.setStatus(TaskStatus.PENDING);
+
+        System.out.println("1");
 
         LocalDate deadline = LocalDate.now().plusDays(10);
-        taskDTO.setDeadline(deadline);
-
-        Task task = modelMapper.map(taskDTO, Task.class);
-
+        task.setDeadline(deadline);
+        task.setContent(taskDTO.getContent());
+        System.out.println("2");
         Optional<User> user = userRepository.findByUsername(authentication.getName());
         task.setAssignedBy(user.get());
+        System.out.println("3");
         task.setAssignedTo(userRepository.findById(taskDTO.getStudent_id()).get());
-
+        System.out.println("4");
         task = taskRepository.save(task);
 
+        System.out.println("5");
         taskDTO.setId(task.getId());
+
+        System.out.println("6");
+
         return taskDTO;
     }
 
     @Override
     public TaskDTO getById(Integer id) {
-        return null;
+        Task task = taskRepository.getOne(id);
+        return modelMapper.map(task, TaskDTO.class);
     }
 
     @Override
     public Boolean delete(Integer id) {
-        return null;
+        taskRepository.deleteById(id);
+        return true;
     }
 
     @Override
     public TaskDTO update(TaskDTO task) {
-
-
-
         return null;
     }
 }

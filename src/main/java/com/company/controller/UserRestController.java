@@ -7,6 +7,7 @@ import com.company.dto.ResponseDTO;
 import com.company.dto.UserDTO;
 import com.company.entity.User;
 import com.company.service.inter.UserServiceInter;
+import com.company.util.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/app")
+@RequestMapping(ApiPaths.UserCtrl.CTRL)
 @RequiredArgsConstructor
 public class UserRestController {
 
@@ -27,14 +28,14 @@ public class UserRestController {
         return app.getName()+" Version : "+app.getVersion() ;
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity getUser(@PathVariable("id") Integer id){
         Optional<User> user =  service.findById(id);
 
         return ResponseEntity.ok(ResponseDTO.of(new UserDTO(user.get())));
     }
 
-    @PostMapping("/add/user")
+    @PostMapping("/add")
     public ResponseEntity<ResponseDTO> createStudent(@RequestBody RegisterDTO registerDTO){
          UserDTO userDTO = service.register(registerDTO);
 

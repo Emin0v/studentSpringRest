@@ -5,6 +5,9 @@
  */
 package com.company.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
@@ -42,11 +45,14 @@ public class User implements Serializable {
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Role> roles;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignedTo", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Task> studentTaskList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignedBy", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Task> teacherTaskList;
 
     public User() {

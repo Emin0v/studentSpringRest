@@ -32,10 +32,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .requestMatchers()
                 .and()
-                .authorizeRequests().antMatchers("/app/add/user").hasAnyAuthority("ADMIN")
+                .authorizeRequests().antMatchers("/api/users/add").hasAnyAuthority("ADMIN")
+                .and()
+                .authorizeRequests().antMatchers("/api/task/add").hasAnyAuthority("TEACHER")
                 .and()
                 .authorizeRequests().antMatchers("/actuator/**").permitAll()
                 .and()
-                .authorizeRequests().antMatchers("/app/user/**").hasAnyAuthority("ADMIN");
+                .authorizeRequests().antMatchers("/api/user/**").hasAnyAuthority("ADMIN");
     }
 }

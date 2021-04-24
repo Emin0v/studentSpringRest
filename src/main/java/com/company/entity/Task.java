@@ -22,16 +22,16 @@ public class Task implements Serializable {
     private int rank;
     @Basic(optional = false)
     @Column(name = "deadline")
-    @Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
     private LocalDate deadline;
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
     @JoinColumn(name = "assigned_to", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne( fetch = FetchType.EAGER)
     private User assignedTo;
     @JoinColumn(name = "assigned_by", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne( fetch = FetchType.EAGER)
     private User assignedBy;
 
     public Task() {
