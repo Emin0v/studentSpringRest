@@ -1,6 +1,8 @@
 package com.company.service.impl;
 
 import com.company.dto.TaskDTO;
+import com.company.dto.TaskDetailDTO;
+import com.company.dto.TaskUpdateDTO;
 import com.company.entity.Task;
 import com.company.entity.TaskStatus;
 import com.company.entity.User;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,45 +38,37 @@ public class TaskServiceImpl implements TaskServiceInter {
     @Override
     public TaskDTO save(TaskDTO taskDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken){
+        if (authentication instanceof AnonymousAuthenticationToken) {
             throw new UnauthorizedUserException("Please log in");
         }
-//        taskDTO.setRank(10);
-//        taskDTO.setStatus(TaskStatus.PENDING);
-//
-//        LocalDate deadline = LocalDate.now().plusDays(10);
-//        taskDTO.setDeadline(deadline);
-
-//        Task task = modelMapper.map(taskDTO, Task.class);
-        Task task = new Task();
-        task.setRank(10);
-        task.setStatus(TaskStatus.PENDING);
-
-        System.out.println("1");
+        taskDTO.setRank(10);
+        taskDTO.setStatus(TaskStatus.PENDING);
 
         LocalDate deadline = LocalDate.now().plusDays(10);
-        task.setDeadline(deadline);
-        task.setContent(taskDTO.getContent());
-        System.out.println("2");
+        taskDTO.setDeadline(deadline);
+
+        Task task = modelMapper.map(taskDTO, Task.class);
+
         Optional<User> user = userRepository.findByUsername(authentication.getName());
         task.setAssignedBy(user.get());
-        System.out.println("3");
-        task.setAssignedTo(userRepository.findById(taskDTO.getStudent_id()).get());
-        System.out.println("4");
+
+        task.setAssignedTo(userRepository.getOne(taskDTO.getStudent_id()));
         task = taskRepository.save(task);
 
-        System.out.println("5");
         taskDTO.setId(task.getId());
-
-        System.out.println("6");
-
         return taskDTO;
     }
 
     @Override
-    public TaskDTO getById(Integer id) {
+    public TaskDetailDTO getById(Integer id) {
         Task task = taskRepository.getOne(id);
-        return modelMapper.map(task, TaskDTO.class);
+        return modelMapper.map(task, TaskDetailDTO.class);
+    }
+
+    @Override
+    public List<TaskDetailDTO> getAll() {
+        List<Task> data = taskRepository.findAll();
+        return Arrays.asList(modelMapper.map(data, TaskDetailDTO[].class));
     }
 
     @Override
@@ -82,7 +78,39 @@ public class TaskServiceImpl implements TaskServiceInter {
     }
 
     @Override
-    public TaskDTO update(TaskDTO task) {
+    public TaskDetailDTO update(Integer id, TaskUpdateDTO task) {
+        Task taskDb = taskRepository.getOne(id);
+
+        User assignedBy = userRepository.getOne(task.getAssignedBy());
+        User assignedTo = userRepository.getOne(task.getAssignedTo());
+
+        taskDb.setAssignedTo(assignedTo);
+        taskDb.setAssignedBy(assignedBy);
+        taskDb.setId(task.getId());
+        taskDb.setContent(task.getContent());
+        taskDb.setDeadline(task.getDeadline());
+        taskDb.setRank(task.getRank());
+        taskDb.setStatus(task.getStatus());
+
+        Task updatedTask = taskRepository.save(taskDb);
+
+        return modelMapper.map(updatedTask, TaskDetailDTO.class);
+    }
+
+    public TaskDetailDTO finishTask(Integer id) {
+        Task taskDb = taskRepository.getOne(id);
+        if (taskDb == null)
+            throw new IllegalArgumentException("Task Does Not Exist ID:" + id);
+
+        LocalDate currentDate = LocalDate.now();
+        if (currentDate.isAfter(taskDb.getDeadline())) {
+
+            taskDb.setRank(taskDb.getRank()-1);
+
+        } else {
+            taskDb.setStatus(TaskStatus.SUCCESSFUL);
+        }
+
         return null;
     }
 }

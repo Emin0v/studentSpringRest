@@ -10,15 +10,13 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskDTO {
+public class TaskUpdateDTO {
 
     private Integer id;
     private String content;
     private int rank;
     private LocalDate deadline;
     private TaskStatus status;
-    private Integer student_id;
-
-
-
+    private Integer assignedTo;
+    private Integer assignedBy;
 }

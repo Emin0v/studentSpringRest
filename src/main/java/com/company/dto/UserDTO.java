@@ -20,7 +20,6 @@ public class UserDTO {
     private Integer age;
     private String username;
     private List<RoleDTO> roles;
-    private List<TaskDTO> taskDTOS;
 
 
     public UserDTO(User user) {
