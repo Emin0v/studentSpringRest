@@ -9,7 +9,7 @@ import com.company.entity.User;
 import com.company.repository.RoleRepository;
 import com.company.repository.StudentRankRepository;
 import com.company.repository.UserRepository;
-import com.company.service.inter.UserServiceInter;
+import com.company.service.inter.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -17,7 +17,6 @@ import org.springframework.security.oauth2.provider.ClientAlreadyExistsException
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +25,7 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserServiceInter {
+public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
     private final StudentRankRepository studentRankRepository;
@@ -104,4 +103,5 @@ public class UserServiceImpl implements UserServiceInter {
     public Optional<User> findByUsername(String email) {
         return userRepository.findByUsername(email);
     }
+
 }

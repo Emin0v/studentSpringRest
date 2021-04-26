@@ -1,7 +1,7 @@
 package com.company.service.impl;
 
 import com.company.entity.User;
-import com.company.service.inter.UserServiceInter;
+import com.company.service.inter.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.User.UserBuilder;
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserServiceInter service;
+    private IUserService service;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

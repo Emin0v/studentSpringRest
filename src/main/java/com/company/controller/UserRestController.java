@@ -6,7 +6,7 @@ import com.company.dto.RegisterDTO;
 import com.company.dto.ResponseDTO;
 import com.company.dto.UserDTO;
 import com.company.entity.User;
-import com.company.service.inter.UserServiceInter;
+import com.company.service.inter.IUserService;
 import com.company.util.ApiPaths;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class UserRestController {
 
     private final AppConfig app;
 
-    private final UserServiceInter service;
+    private final IUserService service;
 
     @GetMapping("/details")
     public String getAppDetails(){

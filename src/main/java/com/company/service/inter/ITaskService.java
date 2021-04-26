@@ -6,13 +6,15 @@ import com.company.dto.TaskUpdateDTO;
 
 import java.util.List;
 
-public interface TaskServiceInter {
+public interface ITaskService {
 
     TaskDTO save(TaskDTO task);
 
+    TaskDetailDTO finishTask(Integer id);
+
     TaskDetailDTO getById(Integer id);
 
-    public List<TaskDetailDTO> getAll();
+    List<TaskDetailDTO> getAll();
 
     Boolean delete(Integer id);
 

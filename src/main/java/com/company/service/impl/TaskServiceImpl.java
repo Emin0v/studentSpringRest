@@ -10,14 +10,12 @@ import com.company.entity.User;
 import com.company.repository.StudentRankRepository;
 import com.company.repository.TaskRepository;
 import com.company.repository.UserRepository;
-import com.company.service.inter.TaskServiceInter;
+import com.company.service.inter.IAuthenticationFacade;
+import com.company.service.inter.ITaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +28,10 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class TaskServiceImpl implements TaskServiceInter {
+public class TaskServiceImpl implements ITaskService {
 
     private final TaskRepository taskRepository;
+    private final IAuthenticationFacade authenticationFacade;
     private final UserRepository userRepository;
     private final StudentRankRepository studentRankRepository;
     private final ModelMapper modelMapper;
@@ -40,17 +39,13 @@ public class TaskServiceImpl implements TaskServiceInter {
 
     @Override
     public TaskDTO save(TaskDTO taskDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new UnauthorizedUserException("Please log in");
-        }
+        Authentication authentication = authenticationFacade.getAuthentication();
         Optional<User> user = userRepository.findByUsername(authentication.getName());
 
         int rank = studentRankRepository.findByStudentId(taskDTO.getStudent_id()).getRank();
-        if(rank==0){
+        if (rank == 0) {
             throw new IllegalArgumentException("this user received rank of 0 he cannot be assigned any tasks");
         }
-
         taskDTO.setStatus(TaskStatus.PENDING);
 
         LocalDate deadline = LocalDate.now().plusDays(10);
@@ -75,7 +70,7 @@ public class TaskServiceImpl implements TaskServiceInter {
 
     @Override
     public List<TaskDetailDTO> getAll() {
-        List<Task> data = taskRepository.findAll();
+        List<Task> data = taskRepository.findAllByAssignedToOrAssignedBy(authenticationFacade.getCurrentUser().getId());
         return Arrays.asList(modelMapper.map(data, TaskDetailDTO[].class));
     }
 
@@ -104,6 +99,7 @@ public class TaskServiceImpl implements TaskServiceInter {
         return modelMapper.map(updatedTask, TaskDetailDTO.class);
     }
 
+    @Override
     public TaskDetailDTO finishTask(Integer id) {
         Task taskDb = taskRepository.getOne(id);
         if (taskDb == null)
@@ -112,18 +108,19 @@ public class TaskServiceImpl implements TaskServiceInter {
         LocalDate currentDate = LocalDate.now();
 
         if (currentDate.isAfter(taskDb.getDeadline())) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication instanceof AnonymousAuthenticationToken) {
-                throw new UnauthorizedUserException("Please log in");
-            }
+            Authentication authentication = authenticationFacade.getAuthentication();
             Optional<User> user = userRepository.findByUsername(authentication.getName());
             StudentRank sr = studentRankRepository.findByStudentId(user.get().getId());
-            sr.setRank(sr.getRank()-1);
+            sr.setRank(sr.getRank() - 1);
+            studentRankRepository.save(sr);
 
         } else {
             taskDb.setStatus(TaskStatus.SUCCESSFUL);
+            taskDb = taskRepository.save(taskDb);
         }
 
-        return null;
+        return modelMapper.map(taskDb, TaskDetailDTO.class);
     }
+
+
 }
