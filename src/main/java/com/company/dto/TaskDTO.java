@@ -14,7 +14,6 @@ public class TaskDTO {
 
     private Integer id;
     private String content;
-    private int rank;
     private LocalDate deadline;
     private TaskStatus status;
     private Integer student_id;

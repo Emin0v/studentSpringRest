@@ -4,8 +4,10 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.company.dto.RegisterDTO;
 import com.company.dto.UserDTO;
 import com.company.entity.Role;
+import com.company.entity.StudentRank;
 import com.company.entity.User;
 import com.company.repository.RoleRepository;
+import com.company.repository.StudentRankRepository;
 import com.company.repository.UserRepository;
 import com.company.service.inter.UserServiceInter;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserServiceInter {
 
     private final UserRepository userRepository;
+    private final StudentRankRepository studentRankRepository;
     private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
 
@@ -44,20 +47,26 @@ public class UserServiceImpl implements UserServiceInter {
             user.setPassword(crypt.hashToString(4, user.getPassword().toCharArray()));
 
             String mail = user.getUsername().split("@")[1];
-            List<Role> roles = new ArrayList<>();
 
             if (mail.equals("admin.edu")) {
                 Role role = roleRepository.findByRole("ADMIN");
-                roles.add(role);
+                user.setRole(role);
             } else if (mail.equals("teacher.edu")) {
                 Role role = roleRepository.findByRole("TEACHER");
-                roles.add(role);
+                user.setRole(role);
             } else {
                 Role role = roleRepository.findByRole("STUDENT");
-                roles.add(role);
+                user.setRole(role);
             }
-            user.setRoles(roles);
             User savedUser = userRepository.save(user);
+
+            if(savedUser.getRole().getRole().equals("STUDENT")){
+                StudentRank sr = new StudentRank() ;
+                sr.setRank(10);
+                sr.setStudentId(savedUser);
+
+                studentRankRepository.save(sr);
+            }
 
             return new UserDTO(savedUser);
 

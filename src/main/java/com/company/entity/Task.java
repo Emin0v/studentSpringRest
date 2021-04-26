@@ -18,9 +18,6 @@ public class Task implements Serializable {
     @Column(name = "content")
     private String content;
     @Basic(optional = false)
-    @Column(name = "rank")
-    private int rank;
-    @Basic(optional = false)
     @Column(name = "deadline")
 //    @Temporal(TemporalType.DATE)
     private LocalDate deadline;
@@ -44,7 +41,6 @@ public class Task implements Serializable {
     public Task(Integer id, String content, int rank, LocalDate deadline, TaskStatus status) {
         this.id = id;
         this.content = content;
-        this.rank = rank;
         this.deadline = deadline;
         this.status = status;
     }
@@ -63,14 +59,6 @@ public class Task implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public int getRank() {
-        return rank;
-    }
-
-    public void setRank(int rank) {
-        this.rank = rank;
     }
 
     public LocalDate getDeadline() {

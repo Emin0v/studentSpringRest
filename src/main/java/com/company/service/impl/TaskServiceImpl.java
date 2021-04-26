@@ -3,9 +3,11 @@ package com.company.service.impl;
 import com.company.dto.TaskDTO;
 import com.company.dto.TaskDetailDTO;
 import com.company.dto.TaskUpdateDTO;
+import com.company.entity.StudentRank;
 import com.company.entity.Task;
 import com.company.entity.TaskStatus;
 import com.company.entity.User;
+import com.company.repository.StudentRankRepository;
 import com.company.repository.TaskRepository;
 import com.company.repository.UserRepository;
 import com.company.service.inter.TaskServiceInter;
@@ -32,6 +34,7 @@ public class TaskServiceImpl implements TaskServiceInter {
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final StudentRankRepository studentRankRepository;
     private final ModelMapper modelMapper;
 
 
@@ -41,7 +44,13 @@ public class TaskServiceImpl implements TaskServiceInter {
         if (authentication instanceof AnonymousAuthenticationToken) {
             throw new UnauthorizedUserException("Please log in");
         }
-        taskDTO.setRank(10);
+        Optional<User> user = userRepository.findByUsername(authentication.getName());
+
+        int rank = studentRankRepository.findByStudentId(taskDTO.getStudent_id()).getRank();
+        if(rank==0){
+            throw new IllegalArgumentException("this user received rank of 0 he cannot be assigned any tasks");
+        }
+
         taskDTO.setStatus(TaskStatus.PENDING);
 
         LocalDate deadline = LocalDate.now().plusDays(10);
@@ -49,10 +58,9 @@ public class TaskServiceImpl implements TaskServiceInter {
 
         Task task = modelMapper.map(taskDTO, Task.class);
 
-        Optional<User> user = userRepository.findByUsername(authentication.getName());
         task.setAssignedBy(user.get());
-
-        task.setAssignedTo(userRepository.getOne(taskDTO.getStudent_id()));
+        User assignedTo = userRepository.getOne(taskDTO.getStudent_id());
+        task.setAssignedTo(assignedTo);
         task = taskRepository.save(task);
 
         taskDTO.setId(task.getId());
@@ -89,7 +97,6 @@ public class TaskServiceImpl implements TaskServiceInter {
         taskDb.setId(task.getId());
         taskDb.setContent(task.getContent());
         taskDb.setDeadline(task.getDeadline());
-        taskDb.setRank(task.getRank());
         taskDb.setStatus(task.getStatus());
 
         Task updatedTask = taskRepository.save(taskDb);
@@ -103,9 +110,15 @@ public class TaskServiceImpl implements TaskServiceInter {
             throw new IllegalArgumentException("Task Does Not Exist ID:" + id);
 
         LocalDate currentDate = LocalDate.now();
-        if (currentDate.isAfter(taskDb.getDeadline())) {
 
-            taskDb.setRank(taskDb.getRank()-1);
+        if (currentDate.isAfter(taskDb.getDeadline())) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication instanceof AnonymousAuthenticationToken) {
+                throw new UnauthorizedUserException("Please log in");
+            }
+            Optional<User> user = userRepository.findByUsername(authentication.getName());
+            StudentRank sr = studentRankRepository.findByStudentId(user.get().getId());
+            sr.setRank(sr.getRank()-1);
 
         } else {
             taskDb.setStatus(TaskStatus.SUCCESSFUL);

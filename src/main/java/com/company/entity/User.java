@@ -5,6 +5,7 @@
  */
 package com.company.entity;
 
+import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -17,6 +18,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user")
+@Data
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,13 +42,13 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "password")
     private String password;
-    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     @Fetch(value = FetchMode.SUBSELECT)
-    private List<Role> roles;
+    private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignedTo", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
@@ -54,6 +56,9 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignedBy", fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Task> teacherTaskList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "studentId", fetch = FetchType.EAGER)
+    private List<StudentRank> studentRankList;
+
 
     public User() {
     }
@@ -69,78 +74,6 @@ public class User implements Serializable {
         this.age = age;
         this.username = username;
         this.password = password;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    public List<Task> getStudentTaskList() {
-        return studentTaskList;
-    }
-
-    public void setStudentTaskList(List<Task> studentTaskList) {
-        this.studentTaskList = studentTaskList;
-    }
-
-    public List<Task> getTeacherTaskList() {
-        return teacherTaskList;
-    }
-
-    public void setTeacherTaskList(List<Task> teacherTaskList) {
-        this.teacherTaskList = teacherTaskList;
     }
 
     @Override
