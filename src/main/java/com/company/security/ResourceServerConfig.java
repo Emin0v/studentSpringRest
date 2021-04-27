@@ -4,6 +4,7 @@ import com.company.config.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -32,14 +33,19 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .requestMatchers()
                 .and()
-                .authorizeRequests().antMatchers("/api/users/add").hasAnyAuthority("ADMIN")
+                .authorizeRequests().antMatchers("/api/add/user").hasAnyAuthority("ADMIN")
                 .and()
-                .authorizeRequests().antMatchers("/api/tasks/add").hasAnyAuthority("TEACHER")
+                .authorizeRequests().antMatchers("/api/users/id").hasAnyAuthority("ADMIN")
                 .and()
-                .authorizeRequests().antMatchers("/api/tasks").hasAnyAuthority("STUDENT")
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/api/tasks").hasAnyAuthority("TEACHER")
                 .and()
-                .authorizeRequests().antMatchers("/actuator/**").permitAll()
+                .authorizeRequests().antMatchers(HttpMethod.PUT, "/api/tasks/id").hasAnyAuthority("TEACHER")
                 .and()
-                .authorizeRequests().antMatchers("/api/user/**").hasAnyAuthority("ADMIN");
+                .authorizeRequests().antMatchers(HttpMethod.GET, "/api/tasks").hasAnyAuthority("STUDENT", "TEACHER")
+                .and()
+                .authorizeRequests().antMatchers(HttpMethod.GET, "/api/tasks/finish/id").hasAnyAuthority("STUDENT")
+                .and()
+                .authorizeRequests().antMatchers("/actuator/**").permitAll().anyRequest().hasAnyAuthority("ADMIN");
+
     }
 }

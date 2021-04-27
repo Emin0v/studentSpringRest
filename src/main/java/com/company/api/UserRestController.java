@@ -1,4 +1,4 @@
-package com.company.controller;
+package com.company.api;
 
 
 import com.company.config.AppConfig;
@@ -19,14 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserRestController {
 
-    private final AppConfig app;
-
     private final IUserService service;
-
-    @GetMapping("/details")
-    public String getAppDetails(){
-        return app.getName()+" Version : "+app.getVersion() ;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity getUser(@PathVariable("id") Integer id){
@@ -35,12 +28,6 @@ public class UserRestController {
         return ResponseEntity.ok(ResponseDTO.of(new UserDTO(user.get())));
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<ResponseDTO> createStudent(@RequestBody RegisterDTO registerDTO){
-         UserDTO userDTO = service.register(registerDTO);
-
-        return ResponseEntity.ok(ResponseDTO.of(userDTO,"Successfully added"));
-    }
 
 
 

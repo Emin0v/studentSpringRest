@@ -22,7 +22,7 @@ public class Role implements Serializable {
     private String role;
     //    @OneToMany(mappedBy = "roleId")
 //    private List<UserRole> userRoleList;
-    @OneToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role")
     private List<User> users;
 
     public Role() {

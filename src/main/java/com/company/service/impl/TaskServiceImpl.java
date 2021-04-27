@@ -70,7 +70,8 @@ public class TaskServiceImpl implements ITaskService {
 
     @Override
     public List<TaskDetailDTO> getAll() {
-        List<Task> data = taskRepository.findAllByAssignedToOrAssignedBy(authenticationFacade.getCurrentUser().getId());
+        User user = authenticationFacade.getCurrentUser();
+        List<Task> data = taskRepository.findAllByAssignedToOrAssignedBy(user,user);
         return Arrays.asList(modelMapper.map(data, TaskDetailDTO[].class));
     }
 

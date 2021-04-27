@@ -47,7 +47,7 @@ public class User implements Serializable {
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-    @Fetch(value = FetchMode.SUBSELECT)
+//    @Fetch(value = FetchMode.SUBSELECT)
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignedTo", fetch = FetchType.EAGER)

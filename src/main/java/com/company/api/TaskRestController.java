@@ -1,4 +1,4 @@
-package com.company.controller;
+package com.company.api;
 
 import com.company.dto.ResponseDTO;
 import com.company.dto.TaskDTO;
@@ -27,7 +27,7 @@ public class TaskRestController {
         return ResponseEntity.ok(ResponseDTO.of(list));
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<ResponseDTO> createTask(@RequestBody TaskDTO task) {
         TaskDTO taskDTO = taskService.save(task);
 
@@ -40,7 +40,7 @@ public class TaskRestController {
         return ResponseEntity.ok(ResponseDTO.of(detailDTO, "Successfully updated"));
     }
 
-    @PutMapping("/{id}/finish")
+    @PutMapping("/finish/{id}")
     public ResponseEntity<ResponseDTO> finishTask(@PathVariable(value = "id", required = true) Integer id) {
         TaskDetailDTO detailDTO = taskService.finishTask(id);
         return ResponseEntity.ok(ResponseDTO.of(detailDTO, "The task was completed successfully"));

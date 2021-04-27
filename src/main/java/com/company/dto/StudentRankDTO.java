@@ -1,6 +1,5 @@
 package com.company.dto;
 
-import com.company.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
