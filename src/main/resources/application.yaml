@@ -16,6 +16,6 @@ app:
 spring:
    datasource:
      driver-class-name: com.mysql.cj.jdbc.Driver
-     url : jdbc:mysql://localhost/spring-boot?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+     url : jdbc:mysql://192.168.99.100:3306/spring-boot?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
      username: root
      password: 12345
